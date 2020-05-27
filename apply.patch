@@ -1,0 +1,20 @@
+diff --git a/bazel/foreign_cc/luajit.patch b/bazel/foreign_cc/luajit.patch
+index 82e8733a7..21b30e7e2 100644
+--- a/bazel/foreign_cc/luajit.patch
++++ b/bazel/foreign_cc/luajit.patch
+@@ -33,6 +33,15 @@ index f56465d..3f4f2fa 100644
+  #
+  # Disable the JIT compiler, i.e. turn LuaJIT into a pure interpreter.
+  #XCFLAGS+= -DLUAJIT_DISABLE_JIT
++@@ -111,7 +111,7 @@ XCFLAGS=
++ #XCFLAGS+= -DLUAJIT_NUMMODE=2
++ #
++ # Enable GC64 mode for x64.
++-#XCFLAGS+= -DLUAJIT_ENABLE_GC64
+++XCFLAGS+= -DLUAJIT_ENABLE_GC64
++ #
++ ##############################################################################
++
+ @@ -587,7 +587,7 @@ endif
+ 
+  Q= @

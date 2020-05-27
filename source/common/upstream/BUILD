@@ -148,6 +148,7 @@ envoy_cc_library(
     hdrs = ["health_checker_impl.h"],
     external_deps = [
         "grpc_health_proto",
+        "abseil_optional",
     ],
     deps = [
         ":health_checker_base_lib",
@@ -159,6 +160,7 @@ envoy_cc_library(
         "//source/common/grpc:codec_lib",
         "//source/common/http:codec_client_lib",
         "//source/common/upstream:host_utility_lib",
+        "//source/server:backtrace_lib",
     ],
 )
 

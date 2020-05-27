@@ -26,6 +26,9 @@
 #include "absl/strings/match.h"
 #include "absl/strings/str_cat.h"
 
+#include <iostream>
+#include "server/backtrace.h"
+
 namespace Envoy {
 namespace Upstream {
 
@@ -661,6 +664,10 @@ void GrpcHealthCheckerImpl::GrpcActiveHealthCheckSession::onEvent(Network::Conne
     // For the raw disconnect event, we are either between intervals in which case we already have
     // a timer setup, or we did the close or got a reset, in which case we already setup a new
     // timer. There is nothing to do here other than blow away the client.
+    std::cout << "client_ moved... yikes\n";
+    BackwardsTrace t;                                                                              \
+    t.capture();                                                                                   \
+    t.printTrace(std::cout);
     parent_.dispatcher_.deferredDelete(std::move(client_));
   }
 }
@@ -719,8 +726,12 @@ void GrpcHealthCheckerImpl::GrpcActiveHealthCheckSession::onResetStream(Http::St
     client_->close();
   }
 
+  std::cout << "Client null?: " << (client_ == nullptr ? "NULL" : "not-null") << "\n";
+  std::cout << "logging connection info in reset (conn: " << (client_->connection_ == nullptr ? "NULL" : "not-null") << ")\n";
+  std::cout << "ID: " << client_->id() << "\n";
   ENVOY_CONN_LOG(debug, "connection/stream error health_flags={}", *client_,
                  HostUtility::healthFlagsToString(*host_));
+  std::cout << "(done) logging connection info in reset\n";
 
   // TODO(baranov1ch): according to all HTTP standards, we should check if reason is one of
   // Http::StreamResetReason::RemoteRefusedStreamReset (which may mean GOAWAY),
