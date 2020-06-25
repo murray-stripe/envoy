@@ -39,6 +39,9 @@ Bug Fixes
 * http: fixed a bug where in some cases slash was moved from path to query string when :ref:`merging of adjacent slashes<envoy_api_field_config.filter.network.http_connection_manager.v2.HttpConnectionManager.merge_slashes>` is enabled.
 * http: fixed several bugs with applying correct connection close behavior across the http connection manager, health checker, and connection pool. This behavior may be temporarily reverted by setting runtime feature `envoy.reloadable_features.fix_connection_close` to false.
 * prometheus stats: fix the sort order of output lines to comply with the standard.
+* udp: the :ref:`reuse_port <envoy_api_field_Listener.reuse_port>` listener option must now be 
+  specified for UDP listeners if concurrency is > 1. This previously crashed so is considered a 
+  bug fix.
 * upstream: fixed a bug where Envoy would panic when receiving a GRPC SERVICE_UNKNOWN status on the health check.
 
 Removed Config or Runtime
@@ -98,6 +101,7 @@ New Features
 * network filters: added a :ref:`postgres proxy filter <config_network_filters_postgres_proxy>`.
 * network filters: added a :ref:`rocketmq proxy filter <config_network_filters_rocketmq_proxy>`.
 * ratelimit: added :ref:`API version <envoy_v3_api_field_config.ratelimit.v3.RateLimitServiceConfig.transport_api_version>` to explicitly set the version of gRPC service endpoint and message to be used.
+* redis: added acl support :ref:`downstream_auth_username <envoy_v3_api_field_extensions.filters.network.redis_proxy.v3.RedisProxy.downstream_auth_username>` for downstream client ACL authentication, and :ref:`auth_username <envoy_v3_api_field_extensions.filters.network.redis_proxy.v3.RedisProtocolOptions.auth_username>` to configure authentication usernames for upstream Redis 6+ server clusters with ACL enabled.
 * request_id: added to :ref:`always_set_request_id_in_response setting <envoy_v3_api_field_extensions.filters.network.http_connection_manager.v3.HttpConnectionManager.always_set_request_id_in_response>`
   to set :ref:`x-request-id <config_http_conn_man_headers_x-request-id>` header in response even if
   tracing is not forced.
